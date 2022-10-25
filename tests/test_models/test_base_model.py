@@ -67,6 +67,7 @@ class TestBaseModelInstance(unittest.TestCase):
                 msg=f"to_dict returns none dict type")
 
     def test_to_dict_contains_externally_added_attributes(self):
+        self.base.my_number = 98
         self.assertIn("my_number", self.base.to_dict())
 
     def test_classname_in_to_dict(self):
