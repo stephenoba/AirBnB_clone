@@ -3,6 +3,8 @@
 """Unit test for base_model
 """
 import unittest
+import datetime
+
 from models.base_model import BaseModel
 
 class TestBaseModelInstatiation(unittest.TestCase):
@@ -41,8 +43,14 @@ class TestBaseModelInstance(unittest.TestCase):
     def test_created_at_attribute(self):
         self.assertIn('created_at',  self.base.__dict__)
 
+    def test_created_at_attribute_type(self):
+        self.assertTrue(isinstance(self.base.created_at, datetime.datetime))
+
     def test_updated_at_attribute(self):
         self.assertIn('updated_at', self.base.__dict__)
+
+    def test_updated_at_attribute_type(self):
+        self.assertTrue(isinstance(self.base.updated_at, datetime.datetime))
 
     def test_save(self):
         prev_update_at = self.base.updated_at
