@@ -2,8 +2,9 @@ name: AirBnB CLI
 
 on:
   push:
-    branches: 
-      - 'wip/**'
+    branches:
+      - 'main'
+      - 'wip**'
 
 jobs:
   test:
