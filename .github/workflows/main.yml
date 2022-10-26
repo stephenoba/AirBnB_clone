@@ -22,5 +22,5 @@ jobs:
       - name: Run Tests
         run: |
           pycodestyle --filename=*.py, */*.py
-          python3 -m unittest discover tests
+          python3 -m unittest discover -v tests
 
