@@ -5,20 +5,27 @@ subclasses
 from uuid import uuid4
 from datetime import datetime
 
+
 class BaseModel:
     """Defines all common attributes/methods for subclasses
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initializes instance variables."""
         self.id = str(uuid4())
-        self.created_at = self.updated_at = datetime.now()
+        self.created_at = self.updated_at = datetime.utcnow()
+        if kwargs:
+            for k, v in kwargs.items():
+                if k == "created_at" or k == "updated_at":
+                    v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
+                if k != "__class__":
+                    setattr(self, k, v)
 
     def save(self):
         """
         Save object
         """
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
 
     def to_dict(self):
         """
