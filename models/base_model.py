@@ -1,20 +1,22 @@
-#!/usr/bin/env python3
-# base_model.py
+#!/usr/bin/python3
 """Module contains BaseModel class that povides a template for
 subclasses
 """
 
+from uuid import uuid4
+from datetime import datetime
 
 class BaseModel:
     """Defines all common attributes/methods for subclasses
     """
-    # Todo: implement __init__ method with attributes
-    #   id, created_at, and updated_at
 
-    # Todo: Add __str__ magic method
+    def __init__(self):
+        """Initializes instance variables."""
+        self.id = str(uuid4())
+        self.created_at = self.updated_at = datetime.now()
 
-    # Todo: Add public instance method `save(self)`
+    def __str__(self):
+        """Returns the string representation of the BaseModel Instance"""
+        d = self.__dict__
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, d)
 
-    # Todo: Add public instance method `to_dict(self)`
-
-    pass
