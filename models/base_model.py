@@ -20,7 +20,7 @@ class BaseModel:
         """
         Save object
         """
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         """
@@ -29,8 +29,8 @@ class BaseModel:
         """
         _dict = self.__dict__
         _dict["__class__"] = self.__class__.__name__
-        _dict["created_at"] = datetime.datetime.isoformat(self.created_at)
-        _dict["updated_at"] = datetime.datetime.isoformat(self.updated_at)
+        _dict["created_at"] = datetime.isoformat(self.created_at)
+        _dict["updated_at"] = datetime.isoformat(self.updated_at)
         return _dict
 
     def __str__(self):
