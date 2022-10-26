@@ -2,8 +2,9 @@
 # test_base_model.py
 """Unit test for base_model
 """
+import uuid
 import unittest
-import datetime
+from datetime import datetime
 
 from models.base_model import BaseModel
 
@@ -12,8 +13,9 @@ class TestBaseModelInstatiation(unittest.TestCase):
     """
     def setUp(self):
         self.base = BaseModel()
+        self.date = datetime.now()
 
-   def tearDown(self):
+    def tearDown(self):
         del self.base
 
     def test_uuid_not_equal(self):
@@ -25,27 +27,52 @@ class TestBaseModelInstatiation(unittest.TestCase):
     def test_instatiate_no_args(self):
         pass
 
-    @unittest.skip("to be implemented for task 4")
     def test_instantiate_with_args(self):
-        pass
+        new_base = BaseModel(id=89,
+                created_at=self.date,
+                updated_at=self.date)
+        self.assertEqual(new_base.id, 89)
+        self.assertEqual(new_base.created_at, date)
+        self.assertEqual(new_base.updated_at, date)
 
     def test_updated_at_and_created_at_equal_on_instantiation(self):
         self.assertEqual(self.base.created_at, self.base.updated_at)
 
-    def test_kwargs_is_empty(self):
-        pass
-
     def test_instantiate_from_dict(self):
-        pass
+        new_base = BaseModel(**self.base.to_dict())
+        self.assertFalse(new_base is self.base)
+        self.assertEqual(new_base.id, self.base.id)
+
+    def test_instantiate_from_invalid_dict(self):
+        _dict = {"invalid_id": 345, "invalid_date": "0-0-0"}
+        with self.assertRaises(Exception):
+            new_base = BaseModel(**_dict)
+
+    def test_instantiate_invalid_id_None(self):
+        _dict = {"created_at": self.date, "updated_at": self.date}
+        with self.assertRaises(TypeError):
+            new_base = BaseModel(id=None, **_dict)
+
+    def test_instantiate_invalid_id_nonstring(self):
+        _dict = {"created_at": self.date, "updated_at": self.date}
+        with self.assertRaises(TypeError):
+            new_base = BaseModel(id=12437563, **_dict)
+
+    def test_instantiate_invalid_date_format(self):
+        date = '2022/10/26T09:35:24.972474'
+        _id = str(uuid.uuid4())
+        _dict = {"id": _id, "created_at": date, "updated_at": date}
+        with self.assertRaises(ValueError):
+            new_base = BaseModel(**_dict)
 
     def test_args_not_empty(self):
-        pass
-
-    def test_args_kwargs_not_empty(self):
-        pass
+        new_base = BaseModel(123)
+        self.assertTrue(hasattr(new_base, id))
  
     def test_object_has_same_attributes(self):
-        pass
+        new_base = BaseModel(**self.base.to_dict())
+        for key in self.base.to_dict.keys():
+            self.assertEqual(new_base.key, self.base.key)
 
 class TestBaseModelInstance(unittest.TestCase):
     """Unittest for BaseModel instance
@@ -64,13 +91,13 @@ class TestBaseModelInstance(unittest.TestCase):
         self.assertIn('created_at',  self.base.__dict__)
 
     def test_created_at_attribute_type(self):
-        self.assertTrue(isinstance(self.base.created_at, datetime.datetime))
+        self.assertTrue(isinstance(self.base.created_at, datetime))
 
     def test_updated_at_attribute(self):
         self.assertIn('updated_at', self.base.__dict__)
 
     def test_updated_at_attribute_type(self):
-        self.assertTrue(isinstance(self.base.updated_at, datetime.datetime))
+        self.assertTrue(isinstance(self.base.updated_at, datetime))
 
     def test_save(self):
         prev_update_at = self.base.updated_at
