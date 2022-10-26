@@ -2,8 +2,6 @@
 """Module contains BaseModel class that povides a template for
 subclasses
 """
-import datetime
-
 from uuid import uuid4
 from datetime import datetime
 
