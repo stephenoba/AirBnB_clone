@@ -10,6 +10,12 @@ from models.base_model import BaseModel
 class TestBaseModelInstatiation(unittest.TestCase):
     """Unittests for instantiation of BaseModel class
     """
+    def setUp(self):
+        self.base = BaseModel()
+
+   def tearDown(self):
+        del self.base
+
     def test_uuid_not_equal(self):
         base1 = BaseModel()
         base2 = BaseModel()
@@ -24,15 +30,29 @@ class TestBaseModelInstatiation(unittest.TestCase):
         pass
 
     def test_updated_at_and_created_at_equal_on_instantiation(self):
-        base = BaseModel()
-        self.assertEqual(base.created_at, base.updated_at)
+        self.assertEqual(self.base.created_at, self.base.updated_at)
 
+    def test_kwargs_is_empty(self):
+        pass
+
+    def test_instantiate_from_dict(self):
+        pass
+
+    def test_args_not_empty(self):
+        pass
+
+    def test_args_kwargs_not_empty(self):
+        pass
+ 
+    def test_object_has_same_attributes(self):
+        pass
 
 class TestBaseModelInstance(unittest.TestCase):
     """Unittest for BaseModel instance
     """
     def setUp(self):
         self.base = BaseModel()
+        self.base.my_number = 89
 
     def tearDown(self):
         del self.base
@@ -54,7 +74,6 @@ class TestBaseModelInstance(unittest.TestCase):
 
     def test_save(self):
         prev_update_at = self.base.updated_at
-        self.base.my_number = 89
         self.base.save()
         self.assertNotEqual(prev_update_at, self.base.updated_at)
 
@@ -67,7 +86,6 @@ class TestBaseModelInstance(unittest.TestCase):
                 msg=f"to_dict returns none dict type")
 
     def test_to_dict_contains_externally_added_attributes(self):
-        self.base.my_number = 98
         self.assertIn("my_number", self.base.to_dict())
 
     def test_classname_in_to_dict(self):
