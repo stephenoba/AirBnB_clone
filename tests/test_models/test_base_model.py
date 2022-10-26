@@ -67,11 +67,11 @@ class TestBaseModelInstatiation(unittest.TestCase):
 
     def test_args_not_empty(self):
         new_base = BaseModel(123)
-        self.assertTrue(hasattr(new_base, id))
+        self.assertTrue(hasattr(new_base, "id"))
  
     def test_object_has_same_attributes(self):
         new_base = BaseModel(**self.base.to_dict())
-        for key in self.base.to_dict.keys():
+        for key in self.base.to_dict().keys():
             self.assertEqual(new_base.key, self.base.key)
 
 class TestBaseModelInstance(unittest.TestCase):
