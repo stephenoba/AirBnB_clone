@@ -32,10 +32,10 @@ class BaseModel:
         Returns a dictionary containing instance attributes
         and class name
         """
-        _dict = self.__dict__
+        _dict = self.__dict__.copy()
         _dict["__class__"] = self.__class__.__name__
-        _dict["created_at"] = datetime.isoformat(self.created_at)
-        _dict["updated_at"] = datetime.isoformat(self.updated_at)
+        _dict["created_at"] = self.created_at.isoformat()
+        _dict["updated_at"] = self.updated_at.isoformat()
         return _dict
 
     def __str__(self):
