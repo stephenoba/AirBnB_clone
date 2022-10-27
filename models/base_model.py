@@ -4,6 +4,7 @@ subclasses
 """
 from uuid import uuid4
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -13,19 +14,22 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Initializes instance variables."""
         self.id = str(uuid4())
-        self.created_at = self.updated_at = datetime.utcnow()
+        self.created_at = self.updated_at = datetime.now()
         if kwargs:
             for k, v in kwargs.items():
                 if k == "created_at" or k == "updated_at":
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 if k != "__class__":
                     setattr(self, k, v)
+        else:
+            models.storage.new(self)
 
     def save(self):
         """
         Save object
         """
-        self.updated_at = datetime.utcnow()
+        self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """

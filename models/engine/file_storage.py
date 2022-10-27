@@ -2,6 +2,8 @@
 """Module provides class used to manage file storage
 """
 
+import json
+from models.base_model import BaseModel
 
 class FileStorage:
     """Serializes instances to a JSON file and deserializes JSON
@@ -9,3 +11,28 @@ class FileStorage:
     """
     __file_path = "filestore.json"
     __objects = {}
+
+    def all(self):
+        """Returns the dictionary '_objects'"""
+        return FileStorage.__objects
+
+    def new(self, obj):
+        """
+        Sets in '_objects' the 'obj' with key '<obj classname>.id
+        """
+        clsname = obj.__class__.__name__
+        FileStorage.__objects["{}.{}".format(clsname, obj.id)] = obj
+
+    def save(self):
+        """
+        Serializes '__objects' to the JSON file
+        """
+        dictn = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
+        with open(FileStorage.__file_path, mode="w", encoding="utf-8") as f:
+            json.dump(dictn, f)
+
+    def reload(self):
+        """
+        Deserializes the JSON file to '__objects' if the JSON file exists
+        """
+        pass
