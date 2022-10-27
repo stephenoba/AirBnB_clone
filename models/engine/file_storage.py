@@ -4,6 +4,7 @@
 
 import json
 from models.base_model import BaseModel
+import sys
 
 class FileStorage:
     """Serializes instances to a JSON file and deserializes JSON
@@ -35,4 +36,20 @@ class FileStorage:
         """
         Deserializes the JSON file to '__objects' if the JSON file exists
         """
-        pass
+        objects = {}
+        try:
+            with open(FileStorage.__file_path, encoding='utf8') as f:
+                objects = json.load(f)
+        except FileNotFoundError:
+            FileStorage.__objects = {}
+
+        # check for errors with object creation
+        for _, obj_dict in objects:
+            clsname = obj_dict.pop("__class__")
+            # could also use eval here
+            cls = getattr(sys.modules[__name__], clsname)
+            try:
+                cls(**obj_dict)
+            except (TypeError, ValueError):
+                # we could output to stderr
+                continue
