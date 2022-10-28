@@ -40,16 +40,13 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, encoding='utf8') as f:
                 objects = json.load(f)
+                for _, obj_dict in objects.items():
+                    clsname = obj_dict.pop("__class__")
+                    cls = getattr(sys.modules[__name__], clsname)
+                    try:
+                        cls(**obj_dict)
+                    except (TypeError, ValueError):
+                        # we could output to stderr
+                        continue
         except FileNotFoundError:
-            FileStorage.__objects = {}
-
-        # check for errors with object creation
-        for _, obj_dict in objects.items():
-            clsname = obj_dict.pop("__class__")
-            # could also use eval here
-            cls = getattr(sys.modules[__name__], clsname)
-            try:
-                cls(**obj_dict)
-            except (TypeError, ValueError):
-                # we could output to stderr
-                continue
+            return

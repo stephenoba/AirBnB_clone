@@ -2,10 +2,12 @@
 # test_base_model.py
 """Unit test for base_model
 """
+import os
 import uuid
 import unittest
 from datetime import datetime
 
+import models
 from models.base_model import BaseModel
 
 class TestBaseModelInstatiation(unittest.TestCase):

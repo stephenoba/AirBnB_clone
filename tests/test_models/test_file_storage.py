@@ -31,27 +31,37 @@ class TestFileStorage_Methods(unittest.TestCase):
     """Unittests for the methods of FileStorage class"""
     @classmethod
     def setUpClass(cls):
-        cls.file_path = "filestore.json"
-        cls.initial_obj = BaseModel()
+        try:
+            os.rename("filestore.json", "tmp")
+        except IOError:
+            pass
+        models.storage.save()
 
     @classmethod
     def tearDownClass(cls):
-        if os.path.isfile(cls.file_path):
-            os.remove(cls.file_path)
+        try:
+            os.remove("filestore.json")
+            os.rename("tmp", "filestore.json")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
 
     def test_storage_exists(self):
-        models.storage.reload()
-        self.assertTrue(os.path.exists(self.file_path))
+        self.assertTrue(os.path.exists("filestore.json"))
 
     def test_new(self):
-        models.storage.new(BaseModel())
+        # models.storage.new(BasieModel())
         bmd = BaseModel()
         self.assertIn("BaseModel." + bmd.id, models.storage.all().keys())
         self.assertIn(bmd, models.storage.all().values())
 
     def test_save(self):
-        pass
+        bmd = BaseModel()
+        models.storage.save()
+        with open("filestore.json", encoding='utf8')as f:
+            _dict = json.load(f)
+            self.assertIn("BaseModel." + bmd.id, _dict)
 
     def test_all(self):
-        pass
+        self.assertEqual(dict, type(models.storage.all()))
 
