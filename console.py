@@ -4,7 +4,7 @@ import cmd
 
 class HBNBCommand(cmd.Cmd):
     """Defines the command intepreter"""
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def emptyline(self):
         """Does nothing when it receives an empty line"""
