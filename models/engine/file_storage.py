@@ -30,7 +30,7 @@ class FileStorage:
         """
         dictn = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
         with open(FileStorage.__file_path, mode="w", encoding="utf-8") as f:
-            json.dump(dictn, f)
+            json.dump(dictn, f, indent=4)
 
     def reload(self):
         """
@@ -44,7 +44,7 @@ class FileStorage:
             FileStorage.__objects = {}
 
         # check for errors with object creation
-        for _, obj_dict in objects:
+        for _, obj_dict in objects.items():
             clsname = obj_dict.pop("__class__")
             # could also use eval here
             cls = getattr(sys.modules[__name__], clsname)
