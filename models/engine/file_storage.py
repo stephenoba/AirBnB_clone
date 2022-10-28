@@ -44,7 +44,7 @@ class FileStorage:
                     clsname = obj_dict.pop("__class__")
                     cls = getattr(sys.modules[__name__], clsname)
                     try:
-                        cls(**obj_dict)
+                        self.new(cls(**obj_dict))
                     except (TypeError, ValueError):
                         # we could output to stderr
                         continue
