@@ -27,21 +27,32 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Creates a new instance of"""
+        """
+        Creates a new instance of
+
+        Usage: |
+            create <class name>
+        """
         if not arg:
             print("** class name missing **")
+            return
 
         args = self.clean_args(arg)
         cls_name = args[0]
         if cls_name in self.__classes:
             _obj = self.__classes[cls_name]()
+            models.storage.save()
             print(_obj.id)
         else:
             print("** class doesn't exist **")
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name 
+        """
+        Deletes an instance based on the class name 
         and id
+
+        Usage: |
+            destroy <class name> <id>
         """
         if not arg:
             print("** class name missing **")
@@ -64,6 +75,66 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
+    def do_show(self,arg):
+        """
+        Prints the string representation of an instance
+        based on the class name and id
+
+        Usage: |
+            show <class name> <id>
+        """
+        if arg:
+            objects = models.storage.all()
+            try:
+                args = self.clean_args(arg)
+                cls_name = args[0]
+                _id = args[1]
+                obj_list = list(filter(lambda x: x.id == _id,
+                    objects.values()))
+                print(str(obj_list[0]))
+            except IndexError:
+                print("** instance id missing **")
+            except KeyError:
+                print("** no instance found **")
+        else:
+            print("** class name missing **")
+
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        and can filter on class name
+
+        Usage: |
+            all
+            all <class name>
+        """
+        objects = models.storage.all()
+        if arg:
+            args = self.clean_args(arg)
+            objects = dict(filter(lambda x: isinstance(x[1], eval(args[0])),
+                    objects.items()))
+        print(list(map(lambda x: str(x), objects.values())))
+
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name an id
+
+        Usage: |
+            update <class name> <id> <attribute name> "<attribute value>"
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = self.clean_args(arg)
+        if len(args) == 3:
+            print("** value missing **")
+            return
+        if len(args) == 2:
+            print("** attribute name missing **")
+            return
+
+
     @staticmethod
     def clean_args(args: str):
         """
@@ -74,4 +145,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-        HBNBCommand().cmdloop()
+    HBNBCommand().cmdloop()
