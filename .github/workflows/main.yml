@@ -22,6 +22,7 @@ jobs:
           pip install pycodestyle==2.8.*
       - name: Run Tests
         run: |
-          pycodestyle --filename=*.py, models/*.py, models/*/*.py
+          pycodestyle --filename=*.py, */*.py
+          pycodestyle models/*/*.py
           python3 -m unittest discover -v tests
 
