@@ -2,6 +2,7 @@
 """Defines the HBNB console"""
 import cmd
 
+import models
 from models.base_model import BaseModel
 
 
@@ -37,6 +38,31 @@ class HBNBCommand(cmd.Cmd):
             print(_obj.id)
         else:
             print("** class doesn't exist **")
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name 
+        and id
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = self.clean_args(arg)
+        cls_name = args[0]
+        objects = models.storage.all()
+        try:
+            obj_id = args[1]
+            if cls_name in self.__classes:
+                _key = "{}.{}".format(cls_name, obj_id)
+                obj = objects.pop(_key)
+                del obj
+                models.storage.save()
+            else:
+                print("** class doesn't exist **")
+        except IndexError:
+            print("** instance id missing **")
+        except KeyError:
+            print("** no instance found **")
 
     @staticmethod
     def clean_args(args: str):
