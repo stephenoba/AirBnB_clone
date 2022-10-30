@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             if arg in self.__classes:
                 args = self.clean_args(arg)
                 objects = dict(filter(
-                    lambda x: isinstance(x[1], eval(args[0])),
+                    lambda x: type(x[1]) == eval(args[0]),
                     objects.items()
                     ))
             else:
