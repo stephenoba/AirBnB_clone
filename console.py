@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Defines the HBNB console"""
 import cmd
-
 import models
 from models.base_model import BaseModel
 
@@ -45,6 +44,47 @@ class HBNBCommand(cmd.Cmd):
             print(_obj.id)
         else:
             print("** class doesn't exist **")
+
+    def do_show(self, arg):
+        """Prints the string representration of an instance
+        based on the class name and id.
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = self.clean_args(arg)
+        objdict = models.storage.all()
+        clsname = args[0]
+
+        try:
+            if clsname in self.__classes:
+                id = args[1]
+                print(objdict["{}.{}".format(clsname, id)])
+            else:
+                print("** class doesn't exist **")
+        except IndexError:
+            print("** instance id missing **")
+        except KeyError:
+            print("** no instance found **")
+
+    def do_all(self, arg):
+        """Prints all string representation of all instances
+        based or not on the classname.
+        """
+        args = self.clean_args(arg)
+
+        if len(args) > 0 and args[0] not in self.__classes:
+                print("** class doesn't exist **")
+        else:
+            objdict = models.storage.all()
+            newobj = []
+            for obj in objdict.values():
+                if len(args) > 0 and args[0] == obj.__class__.__name__:
+                    newobj.append(obj.__str__())
+                elif len(args) == 0:
+                    newobj.append(obj.__str__())
+            print(newobj) 
 
     def do_destroy(self, arg):
         """
