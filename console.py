@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """Defines the HBNB console"""
 import cmd
+import re
+
 import models
 from models.base_model import BaseModel
 
@@ -125,13 +127,43 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args = self.clean_args(arg)
-        if len(args) == 3:
-            print("** value missing **")
-            return
-        if len(args) == 2:
-            print("** attribute name missing **")
-            return
+        cls_name = args[0]
+        objects = models.storage.all()
+        try:
+            obj_id = args[1]
+            if cls_name in self.__classes:
+                _key = "{}.{}".format(cls_name, obj_id)
+                obj = objects.get(_key)
+                if len(args) < 4:
+                    print("** value missing **")
+                if len(args) < 3:
+                    print("** attribute name missing **")
+                attr = args[2]
+                value = self.parse_attr_value(args[3], arg)
+                if hasattr(obj, attr):
+                    _type = type(getattr(obj, attr))
+                    setattr(obj, attr, _type(value))
+                else:
+                    setattr(obj, attr, value)
+                models.storage.save()
+            else:
+                print("** class doesn't exist **")
+        except IndexError:
+            print("** instance id missing **")
+        except KeyError:
+            print("** no instance found **")
 
+    @staticmethod
+    def parse_attr_value(arg: str, args_str: str):
+        """"
+        parse value containing spaces"
+        """
+        if arg.startswith('"'):
+            res = re.search(r'"\w+\s?(\w+\s?)+?"', args_str)
+            if res:
+                arg = res.group()
+            return arg.split('"')[1]
+        return arg
 
     @staticmethod
     def clean_args(args: str):
