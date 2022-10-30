@@ -156,10 +156,12 @@ class HBNBCommand(cmd.Cmd):
             if cls_name in self.__classes:
                 _key = "{}.{}".format(cls_name, obj_id)
                 obj = objects.get(_key)
-                if len(args) < 4:
-                    print("** value missing **")
                 if len(args) < 3:
                     print("** attribute name missing **")
+                    return
+                if len(args) < 4:
+                    print("** value missing **")
+                    return
                 attr = args[2]
                 value = self.parse_attr_value(args[3], arg)
                 if hasattr(obj, attr):
