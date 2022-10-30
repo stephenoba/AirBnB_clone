@@ -6,6 +6,11 @@ import re
 import models
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -74,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """
-        Deletes an instance based on the class name 
+        Deletes an instance based on the class name
         and id
 
         Usage: |
@@ -114,8 +119,10 @@ class HBNBCommand(cmd.Cmd):
         if arg:
             if arg in self.__classes:
                 args = self.clean_args(arg)
-                objects = dict(filter(lambda x: isinstance(x[1], eval(args[0])),
-                    objects.items()))
+                objects = dict(filter(
+                    lambda x: isinstance(x[1], eval(args[0])),
+                    objects.items()
+                    ))
             else:
                 print("** class doesn't exist **")
                 return
