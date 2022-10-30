@@ -121,6 +121,10 @@ class HBNBCommand(cmd.Cmd):
 
         Usage: |
             update <class name> <id> <attribute name> "<attribute value>"
+
+        Example: |
+            update BaseModel 1234-5678 name "Betty Holberton"
+            update BaseModel 1234-5678 number "89"
         """
         if not arg:
             print("** class name missing **")
