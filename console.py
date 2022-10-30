@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
                     setattr(obj, attr, _type(value))
                 else:
                     setattr(obj, attr, value)
-                models.storage.save()
+                obj.save()
             else:
                 print("** class doesn't exist **")
         except IndexError:
@@ -163,7 +163,8 @@ class HBNBCommand(cmd.Cmd):
         parse value containing spaces"
         """
         if arg.startswith('"'):
-            res = re.search(r'"\w+\s?(\w+\s?)+?"', args_str)
+            res = re.search(
+                    r'".+\s?(.+\s?)+?"', args_str)
             if res:
                 arg = res.group()
             return arg.split('"')[1]
