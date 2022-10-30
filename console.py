@@ -86,8 +86,8 @@ class HBNBCommand(cmd.Cmd):
         cls_name = args[0]
         objects = models.storage.all()
         try:
-            obj_id = args[1]
             if cls_name in self.__classes:
+                obj_id = args[1]
                 _key = "{}.{}".format(cls_name, obj_id)
                 obj = objects.pop(_key)
                 del obj
