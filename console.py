@@ -68,24 +68,6 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def do_all(self, arg):
-        """Prints all string representation of all instances
-        based or not on the classname.
-        """
-        args = self.clean_args(arg)
-
-        if len(args) > 0 and args[0] not in self.__classes:
-                print("** class doesn't exist **")
-        else:
-            objdict = models.storage.all()
-            newobj = []
-            for obj in objdict.values():
-                if len(args) > 0 and args[0] == obj.__class__.__name__:
-                    newobj.append(obj.__str__())
-                elif len(args) == 0:
-                    newobj.append(obj.__str__())
-            print(newobj) 
-
     def do_destroy(self, arg):
         """
         Deletes an instance based on the class name 
@@ -114,30 +96,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         except KeyError:
             print("** no instance found **")
-
-    def do_show(self,arg):
-        """
-        Prints the string representation of an instance
-        based on the class name and id
-
-        Usage: |
-            show <class name> <id>
-        """
-        if arg:
-            objects = models.storage.all()
-            try:
-                args = self.clean_args(arg)
-                cls_name = args[0]
-                _id = args[1]
-                obj_list = list(filter(lambda x: x.id == _id,
-                    objects.values()))
-                print(str(obj_list[0]))
-            except IndexError:
-                print("** instance id missing **")
-            except KeyError:
-                print("** no instance found **")
-        else:
-            print("** class name missing **")
 
     def do_all(self, arg):
         """
