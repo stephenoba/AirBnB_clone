@@ -125,3 +125,7 @@ class TestBaseModelInstance(unittest.TestCase):
                 msg="key __class__ not found")
         self.assertEqual(model_dict.get("__class__"), 'BaseModel',
                 msg="Invalid class name")
+
+
+if __name__ == "__main__":
+    unittest.main()
