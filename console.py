@@ -110,9 +110,13 @@ class HBNBCommand(cmd.Cmd):
         """
         objects = models.storage.all()
         if arg:
-            args = self.clean_args(arg)
-            objects = dict(filter(lambda x: isinstance(x[1], eval(args[0])),
+            if arg in self.__classes:
+                args = self.clean_args(arg)
+                objects = dict(filter(lambda x: isinstance(x[1], eval(args[0])),
                     objects.items()))
+            else:
+                print("** class doesn't exist **")
+                return
         print(list(map(lambda x: str(x), objects.values())))
 
     def do_update(self, arg):
