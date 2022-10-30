@@ -131,7 +131,7 @@ class TestCity_save(unittest.TestCase):
         cy = City()
         cy.save()
         cyid = "City." + cy.id
-        with open("fileatore.json", "r") as f:
+        with open("filestore.json", "r") as f:
             self.assertIn(cyid, f.read())
 
 
