@@ -35,7 +35,10 @@ class HBNBCommand(cmd.Cmd):
         Method called on an input line when the command prefix
         is not recognized.
         """
-        methods = {"all()": self.do_all}
+        methods = {
+                "all()": self.do_all,
+                "count()": self.do_count,
+                }
 
         args = line.split('.')
         try:
@@ -61,6 +64,9 @@ class HBNBCommand(cmd.Cmd):
 
         Usage: |
             create <class name>
+
+        Example: |
+            create User
         """
         if not arg:
             print("** class name missing **")
@@ -76,8 +82,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, arg):
-        """Prints the string representration of an instance
+        """
+        Prints the string representration of an instance
         based on the class name and id.
+
+        Usage: |
+            show <class name> <id>
+
+        Example: |
+            show User 1234-5432
         """
         if not arg:
             print("** class name missing **")
@@ -148,6 +161,30 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
         print(list(map(lambda x: str(x), objects.values())))
+
+    def do_count(self, arg):
+        """
+        Count the number of objects
+
+        Usage: |
+            count
+            count <class name>
+
+        Example: |
+            count Uset
+        """
+        objects = models.storage.all()
+        if arg:
+            if arg in self.__classes:
+                args = self.clean_args(arg)
+                objects = dict(filter(
+                    lambda x: type(x[1]) == eval(args[0]),
+                    objects.items()
+                    ))
+            else:
+                print("** class doesn't exist **")
+                return
+        print(len(objects))
 
     def do_update(self, arg):
         """
