@@ -30,6 +30,22 @@ class HBNBCommand(cmd.Cmd):
         """Does nothing when it receives an empty line"""
         pass
 
+    def default(self, line):
+        """
+        Method called on an input line when the command prefix
+        is not recognized.
+        """
+        methods = {"all()": self.do_all}
+
+        args = line.split('.')
+        try:
+            clsname = args[0]
+            method = args[1]
+            methods[method](args[0])
+        except (IndexError, KeyError):
+            print("*** Unknown syntax: {}".format(line))
+            return False
+
     def do_quit(self, arg):
         """Quit command to exit program."""
         return True
