@@ -156,6 +156,9 @@ class HBNBCommand(cmd.Cmd):
             if cls_name in self.__classes:
                 _key = "{}.{}".format(cls_name, obj_id)
                 obj = objects.get(_key)
+                if not obj:
+                    print("** no instance found **")
+                    return
                 if len(args) < 3:
                     print("** attribute name missing **")
                     return
@@ -174,8 +177,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
         except IndexError:
             print("** instance id missing **")
-        except KeyError:
-            print("** no instance found **")
 
     @staticmethod
     def parse_attr_value(arg: str, args_str: str):
