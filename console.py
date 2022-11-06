@@ -36,14 +36,14 @@ class HBNBCommand(cmd.Cmd):
         is not recognized.
         """
         methods = {
-                "all()": self.do_all,
-                "count()": self.do_count,
+                "all": self.do_all,
+                "count": self.do_count,
                 }
 
         args = line.split('.')
         try:
             clsname = args[0]
-            method = args[1]
+            method = args[1].split("(")[0]
             methods[method](args[0])
         except (IndexError, KeyError):
             print("*** Unknown syntax: {}".format(line))
