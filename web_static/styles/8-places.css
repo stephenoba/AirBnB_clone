@@ -1,8 +1,13 @@
 .places {
-    text-align: center;
+    /* text-align: center; */
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
 }
 
 .places h1 {
+    flex: 1 1000px;
     display: flex;
     align-self: start;
     font-size: 30px;

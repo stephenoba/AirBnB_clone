@@ -45,6 +45,7 @@
     border: 1px solid #ddd;
     width: 100%;
     box-sizing: border-box;
+    z-index: 1;
 }
 
 .popover h2 {
@@ -60,7 +61,7 @@
 button {
     font-size: 18px;
     background-color: #ff5a5f;
-    color: #fff;
+    color: #000;
     height: 48px;
     width: 20%;
     margin-top: 11px;
